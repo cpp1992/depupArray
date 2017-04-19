@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.bootcss.com/lodash.js/4.17.4/lodash.js"></script>
+<script src="./myMap.js"></script>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+</style>
+
+<body>
+<script type="text/javascript">
+	var arr1 = []; //创建一个要去重的数组
+	var objArr = [];
+	var funArr = [];
+	var stringArr = [];
+
+	//数字
+	for (var i = 0; i < 900000; i++) {
+		arr1.push(parseInt(Math.random() * 10) + 1);
+	}
+	//字符串
+	for (var i = 0; i < 20000; i++) {
+		stringArr.push((parseInt(Math.random() * 10) + 1).toString())
+	}
+	for (var i = 0; i < 20000; i++) {
+		arr1.push(stringArr[i]);
+	}
+	//对象
+	for (var i = 0; i < 20000; i++) {
+		objArr.push({a: (parseInt(Math.random() * 10) + 1)})
+	}
+	for (var i = 0; i < 20000; i++) {
+		arr1.push(objArr[i]);
+	}
+	//函数
+	for (var i = 0; i < 20000; i++) {
+		var a = () => (parseInt(Math.random() * 10) + 1)
+		funArr.push(a)
+	}
+	for (var i = 0; i < 20000; i++) {
+		arr1.push(funArr[i]);
+	}
+	//undefined
+	for (var i = 0; i < 10000; i++) {
+		funArr.push(undefined)
+	}
+	for (var i = 0; i < 10000; i++) {
+		arr1.push(funArr[i]);
+	}
+	//null
+	for (var i = 0; i < 10000; i++) {
+		funArr.push(null)
+	}
+	for (var i = 0; i < 10000; i++) {
+		arr1.push(funArr[i]);
+	}
+    //true、false
+    for (var i = 0; i < 5000; i++) {
+		arr1.push(parseInt(i%2 === 0 ? true : false));
+    }
+
+	arr2 = arr1.concat()
+	arr3 = arr1.concat()
+	var u1 = (arr) => {
+		console.time('遍历includes')
+		var newArr = [];
+		arr.forEach(function(item){
+			if(!newArr.includes(item)){
+				newArr.push(item);
+			}
+		});
+		console.timeEnd('遍历includes')
+		return true ;
+	}
+
+	function u2 (arr) {
+		  console.time('改进HashTable')
+
+	      var tmp_map = {
+	            string: {},
+	            number: {},
+	      };
+	      var has_undefined = false
+	      var has_true = false
+	      var has_false = false
+	      var returnList = []
+	      var noneHashableList = []
+	      var len = arr.length;
+	      for (var i = 0; i < len; i++) {
+	            var value = arr[i];
+	            var type = typeof value;
+	            if (type === 'string' || type === 'number') {
+	                  if (!tmp_map[type][value]) {
+	                        returnList.push(value);
+	                        tmp_map[type][value] = true;
+	                  }
+	            } else if (value === undefined) {
+	                  if (has_undefined) continue;
+	                  has_undefined = true;
+	                  returnList.push(undefined);
+	            } else if (value === true) {
+	                  if (has_true) continue;
+	                  has_true = true;
+	                  returnList.push(true);
+	            } else if (value === false) {
+	                  if (has_false) continue;
+	                  has_false = false;
+	                  returnList.push(has_false);
+	            } else if (!noneHashableList.includes[value]) {
+	                  noneHashableList.push(value);
+	                  returnList.push(value);
+	            }
+	      }
+			  console.timeEnd('改进HashTable')
+
+	      return true;
+	}
+
+	var u3 =  (array) => {
+		//console.time('Map')
+		const seen = new Map()
+		array.filter((a) => !seen.has(a) && seen.set(a, 1))
+		//console.timeEnd('Map')
+		return true
+	}
+
+	var u4 =  (arr) => {
+		//console.time('Set')
+		arr = Array.from(new Set(arr))
+		//console.timeEnd('Set')
+		return true
+	}
+
+
+	var u5 = (array)  => {
+		//console.time('Lodash Uniq')
+		_.uniq(array)
+		//console.timeEnd('Lodash Uniq')
+		return true
+	}
+
+	var u1_arr = []
+	var u2_arr = []
+	var u3_arr = []
+	var MW_arr = []
+	var u4_arr = []
+	var SW_arr = []
+	var u5_arr = []
+	var TestFunc = () => {
+		var u1_start = new Date()
+		u1(arr1)
+		var u1_end = new Date()
+		u1_arr.push(u1_end - u1_start)
+		
+		var u2_start = new Date()
+		u2(arr1)
+		var u2_end = new Date()
+		u2_arr.push(u2_end - u2_start)
+		
+		var u3_start = new Date()
+		u3(arr1)
+		var u3_end = new Date()
+		u3_arr.push(u3_end - u3_start)
+		
+		var MW_start = new Date()
+		const seen = new Map()
+		arr3.filter((a) => !seen.has(a) && seen.set(a, 1))
+		var MW_end = new Date()
+		MW_arr.push(MW_end - MW_start)
+		
+		var u4_start = new Date()
+		u4(arr1)
+		var u4_end = new Date()
+		u4_arr.push(u4_end - u4_start)
+		
+		var SW_start = new Date()
+		arr = [...new Set(arr2)];
+		var SW_end = new Date()
+		SW_arr.push(SW_end - SW_start)
+
+		var u5_start = new Date()
+		u5(arr1)
+		var u5_end = new Date()
+		u5_arr.push(u5_end - u5_start)
+	}
+	
+	for(let i = 0; i< 100; i++){
+		TestFunc()
+	}
+	
+	console.log('遍历includes：',eval(u1_arr.join("+")))
+	console.log('HashTable：',eval(u2_arr.join("+")))
+	console.log('Map：',eval(u3_arr.join("+")))
+	console.log('Map without function：',eval(MW_arr.join("+")))
+	console.log('Set：',eval(u4_arr.join("+")))
+	console.log('Set without function：',eval(SW_arr.join("+")))
+	console.log('Lodash uniq：',eval(u5_arr.join("+")))
+
+</script>
+</body>
+
+</html>
