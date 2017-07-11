@@ -2,16 +2,20 @@
 <html lang="en">
 <script src="https://cdn.bootcss.com/lodash.js/4.17.4/lodash.js"></script>
 <script src="./myMap.js"></script>
-<head>
+<head id='ux'>
 	<meta charset="UTF-8">
 	<title>Document</title>
 </head>
 <style>
 </style>
 
-<body>
+<body id='btn'>
+<button id='btn1'>123</button>
 <script type="text/javascript">
-	var arr1 = []; //创建一个要去重的数组
+	var ux = document.getElementById("ux");
+	var uy = document.getElementById("uy");
+	var btn = document.getElementById("btn");
+	/* var arr1 = []; //创建一个要去重的数组
 	var objArr = [];
 	var funArr = [];
 	var stringArr = [];
@@ -196,9 +200,15 @@
 	console.log('Map without function：',eval(MW_arr.join("+")))
 	console.log('Set：',eval(u4_arr.join("+")))
 	console.log('Set without function：',eval(SW_arr.join("+")))
-	console.log('Lodash uniq：',eval(u5_arr.join("+")))
-
+	console.log('Lodash uniq：',eval(u5_arr.join("+"))) */
+	var u1 = () => {
+	alert(1);
+	}
+	btn.addEventListener('click',function(){alert('hello world')},false);
+ux.onClick = u1();
+uy.onClick = u1();
 </script>
+1123 
 </body>
 
 </html>
